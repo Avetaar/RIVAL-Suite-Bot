@@ -6,7 +6,7 @@
 
 ---
 
-## 🇸🇦 العربية
+## العربية
 
 RIVAL Suite Bot هو **مساعد ذكي على التلغرام** — تستخدمه بأزرار بس، بدون ما تكتب أي أمر.
 بوت واحد يقوم بكل شي بدالك: 💬 محادثة، 🖼️ صور، 🔊 صوت، 🎵 موسيقى، 🌐 ترجمة — كل شي في مكان واحد.
@@ -51,7 +51,7 @@ install.bat
 
 ---
 
-## 🇬🇧 English
+## English
 
 RIVAL Suite Bot is a **smart assistant on Telegram** — you use it only by pressing buttons, no commands to type.
 One bot does everything for you: 💬 chat, 🖼️ images, 🔊 voice, 🎵 music, 🌐 translation — all in one place.
