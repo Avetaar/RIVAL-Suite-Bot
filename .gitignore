@@ -1,0 +1,10 @@
+RIVAL/bot_credentials.json
+RIVAL/RIVAL_data.json
+RIVAL/proxies_pool.json
+RIVAL/verified_proxies.json
+RIVAL/RIVAL_accounts.json
+RIVAL/fx_cache/
+RIVAL/__pycache__/
+__pycache__/
+*.pyc
+.avetaar_bot.lock

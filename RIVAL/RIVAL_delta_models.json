@@ -1,0 +1,14 @@
+{
+ "models": [
+  "gpt-5-nano",
+  "claude-3.7-sonnet",
+  "deepseek-chat",
+  "o3-mini",
+  "gemini",
+  "gpt-5",
+  "gemini-2.0-flash-exp"
+ ],
+ "blocked": {
+  "grok-3-mini-latest": "500 — معطّل من الخدمة"
+ }
+}
