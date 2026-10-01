@@ -1,21 +1,25 @@
 # Avetaar AI Suite Bot — RIVAL
 
-- Developer: Avetaar — Telegram @Avetaar
-- Team / rights: Rival
+Developer: Avetaar (Telegram @Avetaar)
+Team / rights: Rival
 
-Full docs: see README.md (Arabic + English).
+## What this is
+A button-driven Telegram assistant. No commands to type — just tap. One bot
+for chat, images, voice, music and translation. Full details are in
+README.md (Arabic + English).
 
 ## Run
-    python Avetaar.py
-
-The launcher reads token/owner from RIVAL/bot_credentials.json or the
-RIVAL_BOT_TOKEN / RIVAL_OWNER_ID / RIVAL_OWNER_USERNAME environment
-variables, self-installs httpx + Pillow when missing, verifies the bot
-via getMe, pings the owner, then enters the update loop with proxy
-auto-recovery.
+```
+python Avetaar.py
+```
+The launcher loads the bot token and owner ID from
+`RIVAL/bot_credentials.json` (or the environment), self-installs its
+dependencies when they are missing, checks that the bot works, pings the
+owner, and enters the update loop with automatic recovery.
 
 ## Notes
-- The Dev Board is owner-only; closed/banned users get a Contact Dev button.
-- Provider base URLs are base64-encoded in RIVAL_config.py.
-- Images/audio are re-uploaded to Telegram as files, never raw links.
-- Single-instance lock (Mutex/flock) prevents dual-poll conflicts.
+- The owner panel is visible to the owner only; a closed bot or a banned
+  user sees a "Contact Dev" button instead.
+- Images and audio are sent as files, not links.
+- A single-instance lock prevents two copies of the bot from running at
+  once on the same token.
