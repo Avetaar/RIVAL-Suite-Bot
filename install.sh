@@ -5,9 +5,10 @@ echo "=============================================="
 echo "  RIVAL Suite Bot - Avetaar AI Suite (v0.1)"
 echo "  One-command installer: Termux / Linux / macOS / hosting"
 echo "=============================================="
+_py_ok() { "$1" --version >/dev/null 2>&1; }
 PY=""
-for c in python3 python; do
-  if command -v "$c" >/dev/null 2>&1; then PY="$c"; break; fi
+for c in python3 py python; do
+  if command -v "$c" >/dev/null 2>&1 && _py_ok "$c"; then PY="$c"; break; fi
 done
 if [ -z "$PY" ]; then
   echo "python not found - installing..."

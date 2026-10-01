@@ -1,3 +1,5 @@
+<p align="center"><img src="RIVAL_banner.png" alt="RIVAL Suite Bot — Avetaar AI Suite" width="720"></p>
+
 # RIVAL Suite Bot — Avetaar AI Suite
 **الإصدار:** 0.1  •  **المطوّر:** Avetaar (@Avetaar)  •  **الفريق/الحقوق:** Rival
 
