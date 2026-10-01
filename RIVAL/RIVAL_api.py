@@ -32,27 +32,27 @@ async def _resolve_tg_proxy() -> None:
             return False
     async def _probe_proxy(px: str) -> bool:
         try:
-            async with httpx.AsyncClient(proxy=px, timeout=12) as c:
+            async with httpx.AsyncClient(proxy=px, timeout=10) as c:
                 r = await c.post(f"{TELEGRAM}/bot{CFG.TOKEN}/getMe")
             return r.status_code == 200 and bool(r.json().get("ok"))
         except Exception:
             return False
-    candidates = [p for p in PX.get_proxies(40) if p]
-    if _tg_proxy:
-        candidates = [p for p in candidates if p != _tg_proxy] or candidates
-    random.shuffle(candidates)
-    for px in candidates[:12]:
-        if await _probe_proxy(px):
-            _tg_proxy = px
-            _tg_resolved = True
-            print(f"[tg] verified proxy route: {px}")
-            return
     if await _probe_direct():
         _tg_proxy = None
         _tg_resolved = True
         print("[tg] direct route verified")
         return
-    print("[tg] no verified route yet - retrying after 45s")
+    candidates = [p for p in PX.get_proxies(40) if p]
+    if _tg_proxy:
+        candidates = [p for p in candidates if p != _tg_proxy] or candidates
+    random.shuffle(candidates)
+    for px in candidates[:6]:
+        if await _probe_proxy(px):
+            _tg_proxy = px
+            _tg_resolved = True
+            print(f"[tg] direct blocked - proxy route: {px}")
+            return
+    print("[tg] direct blocked and no proxy verified yet - retrying after 45s")
 async def tg_client() -> httpx.AsyncClient:
     global _tg_client
     if _tg_client is None or _tg_client.is_closed:

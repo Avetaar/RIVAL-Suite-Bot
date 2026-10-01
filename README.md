@@ -7,15 +7,15 @@
 
 ## العربية
 
-بوت تلغرام يقوده الأزرار (لا أوامر نصية) يقدّم حزمة AI موحّدة: محادثة، صور، صوت، موسيقى، برمجة، ترجمة — عبر 9 موفّرين شغّالين مع حسابات تتدوّر تلقائياً لكل مستخدم.
+بوت تلغرام يقوده الأزرار (لا أوامر نصية) يقدّم حزمة AI موحّدة: محادثة، صور، صوت، موسيقى، ترجمة — عبر 9 موفّرين شغّالين مع حسابات تتدوّر تلقائياً لكل مستخدم.
 
 ### المميزات
-- 💬 محادثة — نماذج GPT و Qwen و Llama موحّدة (509 نموذج)
+- 💬 محادثة — نماذج GPT و Qwen و Llama موحّدة
 - 🖼️ صورة — توليد وتعديل وإزالة خلفية
 - 🔊 صوت — نص إلى صوت بالعربية
 - 🎵 موسيقى — توليد موسيقي
-- 🐍 برمجة — توليد كود وملفات جاهزة
 - 🌐 ترجمة — 18 لغة بكشف تلقائي للغة المصدر
+- 📊 **73 نموذج عملي** موزعين على الخدمات: 47 محادثة، 8 صورة، 10 صوت، 1 موسيقى، 7 ترجمة
 - ⚙️ **لوحة مطوّر** (خاصة بالمالك): فتح/إغلاق البوت للجميع، حظر/رفع أي مستخدم برقم أو من القائمة، مسح البيانات، إعادة إقلاع، فحص الموفّرين، إحصاءات
 - 🔒 **حماية**: مستخدم محظور أو بوت مغلق → يرى رسالة + زر «اتصال بالمطور»
 - 🎨 ألوان أزرار منسّقة: أزرق = خدمات/تنقل، أخضر = إيجابي، أحمر = خطر
@@ -78,15 +78,15 @@ RIVAL/
 
 ## English
 
-Button-driven Telegram bot (no text commands) exposing a unified AI suite: chat, image, TTS, music, coder, translate — across 9 live providers with per-user auto-rotating accounts.
+Button-driven Telegram bot (no text commands) exposing a unified AI suite: chat, image, TTS, music, translate — across 9 live providers with per-user auto-rotating accounts.
 
 ### Features
-- 💬 Chat — unified GPT / Qwen / Llama models (509 models)
-- 🖼️ Image — generation, editing, background removal
-- 🔊 TTS — text-to-speech in Arabic
-- 🎵 Music — audio generation
-- 🐍 Coder — code generation and ready-to-run files
-- 🌐 Translate — 18 languages with automatic source detection
+- 💬 Chat — unified GPT / Qwen / Llama models (47)
+- 🖼️ Image — generation, editing, background removal (8)
+- 🔊 TTS — text-to-speech in Arabic (10)
+- 🎵 Music — audio generation (1)
+- 🌐 Translate — 18 languages with automatic source detection (7)
+- 📊 **73 working models** across the 5 services
 - ⚙️ **Dev Board** (owner only): open/close for everyone, ban/unban by ID or list, data purge, restart, provider probes, stats
 - 🔒 **Safety**: banned user or closed bot → message + "Contact Dev" button
 - 🎨 Consistent button colors: blue = services/nav, green = positive, red = danger
@@ -151,7 +151,7 @@ RIVAL/
 
 **AR:**
 ```
-RIVAL Suite Bot v0.1 — حزمة AI موحّدة بتلغرام: محادثة، صورة، صوت، موسيقى، برمجة، ترجمة عبر 9 موفّرين. زرّي بالكامل، لوحة مطوّر (فتح/إغلاق/حظر)، اتصال ذكي بتعافٍ ذاتي. يعمل على Termux/لينكس/ماك/ويندوز/استضافة.
+RIVAL Suite Bot v0.1 — حزمة AI موحّدة بتلغرام: محادثة (47)، صورة (8)، صوت (10)، موسيقى (1)، ترجمة (7) عبر 9 موفّرين. 73 نموذج عملي. زرّي بالكامل، لوحة مطوّر (فتح/إغلاق/حظر)، اتصال ذكي بتعافٍ ذاتي. يعمل على Termux/لينكس/ماك/ويندوز/استضافة.
 
 ⚡ أمر واحد للتثبيت: ./install.sh (أو install.bat)
 🛠 المطوّر: Avetaar (@Avetaar) | فريق: Rival
@@ -159,7 +159,7 @@ RIVAL Suite Bot v0.1 — حزمة AI موحّدة بتلغرام: محادثة،
 
 **EN:**
 ```
-RIVAL Suite Bot v0.1 — unified AI suite for Telegram: chat, image, TTS, music, coder, translate across 9 providers. Fully button-driven with an owner Dev Board (open/close/ban), smart connectivity and self-healing. Runs on Termux/Linux/macOS/Windows/hosting.
+RIVAL Suite Bot v0.1 — unified AI suite for Telegram: chat (47), image (8), TTS (10), music (1), translate (7) across 9 providers. 73 working models. Fully button-driven with an owner Dev Board (open/close/ban), smart connectivity and self-healing. Runs on Termux/Linux/macOS/Windows/hosting.
 
 ⚡ One-command install: ./install.sh (or install.bat)
 🛠 Developer: Avetaar (@Avetaar) | Team: Rival

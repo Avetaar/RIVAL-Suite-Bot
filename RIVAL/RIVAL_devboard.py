@@ -93,7 +93,9 @@ async def provider_report() -> str:
         try:
             if name == "alpha":
                 ms = await asyncio.wait_for(F.all_models(), 25)
-                ok, detail = True, f"{len(ms)} نموذج"
+                usable = sum(len(F.models_by_type(ms, t))
+                             for t in ("chat", "image", "tts", "music", "code"))
+                ok, detail = True, f"{usable} نموذج عملي"
             elif name == "gama":
                 n = len(GM.models_by_type("chat"))
                 ok, detail = True, f"{n} نموذج"
