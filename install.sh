@@ -3,9 +3,9 @@ set -e
 cd "$(dirname "$0")"
 
 if [ -t 1 ] && [ -t 0 ]; then
-  R=$'\e[0m'; B=$'\e[1m'; C=$'\e[36m'; G=$'\e[32m'; Y=$'\e[33m'
+  R=$'\e[0m'; B=$'\e[1m'; C=$'\e[36m'; G=$'\e[32m'; Y=$'\e[33m'; E=$'\e[31m'
 else
-  R=""; B=""; C=""; G=""; Y=""
+  R=""; B=""; C=""; G=""; Y=""; E=""
 fi
 
 spin_pid=""
@@ -35,7 +35,7 @@ for c in python3 python py; do
   if command -v "$c" >/dev/null 2>&1 && "$c" --version >/dev/null 2>&1; then PY="$c"; break; fi
 done
 if [ -z "$PY" ]; then
-  echo "${Y}Python not found — installing…${R}"
+  echo "     ${Y}Python not found - installing…${R}"
   if command -v apt-get >/dev/null 2>&1; then
     sudo apt-get update -y >/dev/null 2>&1 || true
     sudo apt-get install -y python3 python3-pip
@@ -53,17 +53,60 @@ if [ -z "$PY" ]; then
     sudo yum install -y python3
     PY=python3
   else
-    echo "${R}Install Python, then run this script again." >&2
+    echo "${E}Install Python, then run this script again.${R}" >&2
     exit 1
   fi
 fi
 echo "     $(${PY} --version 2>&1)   ${G}→ ${PY}${R}"
 
-echo "${C}[2/4] Installing dependencies…${R}"
-spin "installing httpx + Pillow"
-$PY -m pip install --quiet httpx Pillow
-stop_spin
-echo "     ${G}done${R}"
+echo "${C}[2/4] Dependencies${R}"
+NEED_HTTPX=1
+NEED_PIL=1
+$PY -c "import httpx" >/dev/null 2>&1 && NEED_HTTPX=0
+$PY -c "import PIL" >/dev/null 2>&1 && NEED_PIL=0
+if [ "$NEED_HTTPX" -eq 0 ] && [ "$NEED_PIL" -eq 0 ]; then
+  echo "     ${G}already installed${R}"
+else
+  $PY -m pip --version >/dev/null 2>&1 || {
+    echo "     ${Y}pip missing - enabling…${R}"
+    if command -v pkg >/dev/null 2>&1; then
+      pkg install -y python-pip >/dev/null 2>&1 || true
+    fi
+    $PY -m ensurepip >/dev/null 2>&1 || true
+  }
+  spin "installing httpx + Pillow"
+  $PY -m pip install --quiet httpx Pillow 2>&1 | tail -2 || true
+  $PY -m pip install --quiet --break-system-packages httpx Pillow 2>/dev/null || true
+  stop_spin
+  if [ "$NEED_HTTPX" -eq 1 ] && ! $PY -c "import httpx" >/dev/null 2>&1; then
+    echo "     ${Y}httpx still missing - retrying…${R}"
+    spin "retrying httpx"
+    $PY -m pip install httpx 2>&1 | tail -2 || true
+    stop_spin
+  fi
+  if [ "$NEED_PIL" -eq 1 ] && ! $PY -c "import PIL" >/dev/null 2>&1; then
+    echo "     ${Y}Pillow build failed - using system package…${R}"
+    if command -v pkg >/dev/null 2>&1; then
+      pkg install -y python-pillow >/dev/null 2>&1 || {
+        pkg install -y clang >/dev/null 2>&1 || true
+        $PY -m pip install Pillow 2>&1 | tail -2 || true
+      }
+    elif command -v apt-get >/dev/null 2>&1; then
+      sudo apt-get install -y python3-pil >/dev/null 2>&1 || true
+    elif command -v apk >/dev/null 2>&1; then
+      sudo apk add py3-pillow >/dev/null 2>&1 || true
+    fi
+  fi
+  $PY -c "import httpx" >/dev/null 2>&1 || {
+    echo "${E}install failed: httpx - check your internet and rerun ./install.sh${R}" >&2
+    exit 1
+  }
+  $PY -c "import PIL" >/dev/null 2>&1 || {
+    echo "${E}install failed: Pillow - check your internet and rerun ./install.sh${R}" >&2
+    exit 1
+  }
+  echo "     ${G}done${R}"
+fi
 
 CRED="RIVAL/bot_credentials.json"
 if [ -f "$CRED" ]; then
