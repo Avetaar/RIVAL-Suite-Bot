@@ -42,9 +42,15 @@ SCRAPER_URLS = [
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _POOL_FILE = os.path.join(_HERE, "proxies_pool.json")
 _VERIFIED_FILE = os.path.join(_HERE, "verified_proxies.json")
-PREFERRED = [
-    "https://:9f43885a4284fba7780fb0554073c9e1@falunian.galactose.malaxation.melanterite.subtenant.popochek.com:25936",
-]
+_PREFERRED_FILE = os.path.join(_HERE, "RIVAL_preferred_proxies.json")
+def _load_preferred() -> list:
+    try:
+        with open(_PREFERRED_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+        return [str(p) for p in data if str(p).strip()]
+    except Exception:
+        return []
+PREFERRED = _load_preferred()
 _POOL: list = []
 _VERIFIED: list = []
 _FRESH_AT: float = 0.0

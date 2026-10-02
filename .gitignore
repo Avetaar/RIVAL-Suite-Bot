@@ -12,3 +12,4 @@ RIVAL/__pycache__/
 __pycache__/
 *.pyc
 .avetaar_bot.lock
+RIVAL/RIVAL_preferred_proxies.json
