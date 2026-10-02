@@ -41,8 +41,8 @@ install.bat
 
 راح يسألك 3 أشياء:
 1. توكن البوت
-2. يوزر البوت (بدون @)
-3. أيدي المطوّر (المالك)
+2. يوزرك (المطور، بدون @)
+3. أيديك الرقمي (المالك)
 
 بعد كذا البوت يشتغل لحاله. التوكن يخلص بمفصل منفصل مو بالكود — خلّه سرّي، لا تشاركه ولا ترفعه أي مكان.
 
@@ -86,8 +86,8 @@ install.bat
 
 It will ask three things:
 1. The bot token
-2. The bot username (without the @)
-3. The developer's ID (the owner)
+2. Your Telegram username (the developer's, without the @)
+3. Your numeric Telegram ID (the owner)
 
 After that the bot runs on its own. The token is stored in a separate file, not in the code — keep it private, never share it or upload it anywhere.
 
