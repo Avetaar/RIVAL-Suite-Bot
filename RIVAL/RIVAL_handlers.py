@@ -78,6 +78,7 @@ async def _rotated_alpha(chat_id: int, fn, **kw):
 async def on_new_user(chat_id: int) -> None:
     S.ensure(chat_id)
     S.clear_mode(chat_id)
+    S.set_quick_action(chat_id, None)
     await A.message(chat_id, WELCOME, K.main_menu(chat_id))
 async def on_text(chat_id: int, text: str) -> None:
     st = S.get(chat_id)
@@ -126,12 +127,12 @@ async def on_text(chat_id: int, text: str) -> None:
                 if body.startswith(_mark):
                     body = body[len(_mark):].strip()
                     break
+            S.set_quick_action(chat_id, None)
+            S.set_model(chat_id, "image", _tool)
             if not body:
                 await A.message(chat_id, EMO('picture') + " ✦ صِف الصورة اللي تبيها وأنا ارسمها بـ gpt-image-2 👇",
                                  K.image_menu())
                 return
-            S.set_quick_action(chat_id, None)
-            S.set_model(chat_id, "image", _tool)
             await _run_image_now(chat_id, _tool, body)
             return
         if _qa == "edit":
