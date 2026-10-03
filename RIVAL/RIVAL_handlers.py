@@ -112,6 +112,43 @@ async def on_text(chat_id: int, text: str) -> None:
                        K.dev_menu())
         return
     _img = S.get_image(chat_id)
+    _qa = S.quick_action(chat_id)
+    if text.strip() in ("إلغاء", "cancel", "/cancel", "رجوع", "❌") and _qa:
+        S.set_quick_action(chat_id, None)
+        await A.message(chat_id, EMO('check') + " أُلغي.", K.image_menu())
+        return
+    if _qa:
+        _tool = PI.EDIT_TOOL if _qa == "edit" else PI.GEN_TOOL
+        _mid = _tool.split(":", 1)[1]
+        if _qa == "gen":
+            body = text.strip()
+            for _mark in ("صمم صورة ", "صمم", "رسم ", "انشاء صورة", "أنشئ صورة", "انشاء "):
+                if body.startswith(_mark):
+                    body = body[len(_mark):].strip()
+                    break
+            if not body:
+                await A.message(chat_id, EMO('picture') + " ✦ صِف الصورة اللي تبيها وأنا ارسمها بـ gpt-image-2 👇",
+                                 K.image_menu())
+                return
+            S.set_quick_action(chat_id, None)
+            S.set_model(chat_id, "image", _tool)
+            await _run_image_now(chat_id, _tool, body)
+            return
+        if _qa == "edit":
+            if _img:
+                cap = text.strip()
+                S.clear_image(chat_id)
+                S.set_quick_action(chat_id, None)
+                await _run_pi(chat_id, _tool, _mid, _img, cap)
+                return
+            if not text.strip():
+                await A.message(chat_id,
+                                EMO('picture') + " ✦ أرسل الصورة التي تريد تعديلها 👇\n"
+                                + "(بعد وصولها اكتب وصف التعديل)\n"
+                                + "(أو أرسل «إلغاء» للتراجع)",
+                                K.image_menu())
+                return
+            S.set_quick_action(chat_id, None)
     if _img:
         _ref0 = _ref(chat_id, "image")
         _p0, _m0 = U.parse(_ref0)
@@ -134,14 +171,6 @@ async def on_text(chat_id: int, text: str) -> None:
     else:
         await on_new_user(chat_id)
 async def on_photo(chat_id: int, msg: dict) -> None:
-    ref = _ref(chat_id, "image")
-    prov, mid = U.parse(ref)
-    if prov != U.PROV_PI or not PI.needs_image(mid):
-        await A.message(chat_id,
-                        EMO('cross') + " هذا النموذج يولّد من نص، مو من صورة.\n"
-                        + "اختر نموذج تعديل/خلفية من زر «نماذج» ثم أرسل صورتك.",
-                        K.image_menu())
-        return
     data = None
     try:
         ph = (msg.get("photo") or [None])[-1]
@@ -159,14 +188,43 @@ async def on_photo(chat_id: int, msg: dict) -> None:
     if not data:
         await A.message(chat_id, EMO('cross') + " ما وصلت صورة", K.image_menu())
         return
-    cap = msg.get("caption") or ""
+    cap = (msg.get("caption") or "").strip()
+    _qa = S.quick_action(chat_id)
+    if _qa == "edit":
+        S.set_image(chat_id, data)
+        if cap:
+            S.clear_image(chat_id)
+            S.set_quick_action(chat_id, None)
+            await _run_pi(chat_id, PI.EDIT_TOOL, "gpt-image-2-edit", data, cap)
+        else:
+            await A.message(chat_id,
+                            EMO('check') + " حفظت الصورة ✓ اكتب الآن وصف التعديل اللي تريده\n"
+                            + "(أو أرسل «إلغاء» للتراجع)",
+                            K.image_menu())
+        return
+    ref = _ref(chat_id, "image")
+    prov, mid = U.parse(ref)
+    if prov != U.PROV_PI or not PI.needs_image(mid):
+        if _qa == "edit":
+            S.set_quick_action(chat_id, None)
+            S.set_image(chat_id, data)
+            await A.message(chat_id,
+                            EMO('check') + " حفظت الصورة ✓ اكتب الآن وصف التعديل اللي تريده\n"
+                            + "(أو أرسل «إلغاء» للتراجع)",
+                            K.image_menu())
+            return
+        await A.message(chat_id,
+                        EMO('cross') + " هذا النموذج يولّد من نص، مو من صورة.\n"
+                        + "اضغط زر «✏️ تعديل صورة» ثم أرسل صورتك، أو اختر نموذج تعديل/خلفية من زر «النماذج».",
+                        K.image_menu())
+        return
     S.set_image(chat_id, data)
-    if PI.needs_prompt(mid) and not cap.strip():
+    if PI.needs_prompt(mid) and not cap:
         await A.message(chat_id,
                         EMO('check') + " حفظت الصورة ✓ اكتب الآن وصف التعديل اللي تريده\n"
                         + "(سيرفعها مع الوصف تلقائيًا)", K.image_menu())
         return
-    prompt = cap.strip() if PI.needs_prompt(mid) else "remove background"
+    prompt = cap if PI.needs_prompt(mid) else "remove background"
     await _run_pi(chat_id, ref, mid, data, prompt)
 async def _run_pi(chat_id: int, ref: str, mid: str, image_bytes: bytes,
                   prompt: str) -> None:
@@ -189,6 +247,23 @@ async def _run_pi(chat_id: int, ref: str, mid: str, image_bytes: bytes,
         await A.delete(chat_id, a_id)
         print("[pi-err]", ex)
         await A.message(chat_id, _err(ex, "تعذر تعديل الصورة"),
+                        K.image_menu())
+async def _run_image_now(chat_id: int, ref: str, prompt: str) -> None:
+    a_id = await A.progress(chat_id, "image",
+                             "✦ جاري إنشاء الصورة — " + esc(U.label_of(ref)) + "\n⏳ وصفي «" + esc(prompt, 200) + "»",
+                             K.image_menu())
+    try:
+        res = await U.image(chat_id, ref, prompt)
+        url = res.get("url")
+        if not url:
+            raise RuntimeError("لا رابط ناتج في الاستجابة")
+        await A.delete(chat_id, a_id)
+        cap = EMO('picture') + " ✦ " + esc(prompt, 60)
+        await A.photo(chat_id, url, cap, K.image_menu())
+    except Exception as ex:
+        await A.delete(chat_id, a_id)
+        print("[image-err]", ex)
+        await A.message(chat_id, _err(ex, "تعذر توليد الصورة"),
                         K.image_menu())
 async def do_chat(chat_id: int, text: str) -> None:
     ref = _ref(chat_id, "chat")

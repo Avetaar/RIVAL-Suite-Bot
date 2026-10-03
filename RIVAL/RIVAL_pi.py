@@ -11,6 +11,8 @@ _KIND = {"flux-schnell": "gen", "gpt-image-2": "gen",
          "gpt-image-2-edit": "edit", "rembg": "bg", "bria-rmbg": "bg"}
 _BLOCKED_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              "RIVAL_pi_blocked.json")
+GEN_TOOL = "pi:gpt-image-2"
+EDIT_TOOL = "pi:gpt-image-2-edit"
 def _blocked():
     try:
         with open(_BLOCKED_FILE, encoding="utf-8") as f:
@@ -23,7 +25,11 @@ def models_by_type(t):
     bl = _blocked()
     return [m for m in _KIND if m not in bl]
 def display_label(mid):
-    return mid
+    return {"gpt-image-2": "🎨 gpt-image-2 (تصميم)",
+            "gpt-image-2-edit": "✏️ gpt-image-2-edit (تعديل)",
+            "flux-schnell": "⚡ flux-schnell",
+            "rembg": "🗜️ إزالة الخلفية",
+            "bria-rmbg": "🗜️ إزالة الخلفية 2"}.get(mid, mid)
 def kind_of(mid):
     return _KIND.get(mid)
 def needs_image(mid):
@@ -59,8 +65,9 @@ async def image(mid, prompt, image_url=None, proxy=None):
     kind = _KIND.get(mid)
     if not kind:
         raise RuntimeError(f"pic: النموذج {mid} غير معروف")
-    payload = {"prompt": prompt, "image_size": "square_hd",
-               "num_inference_steps": 8}
+    payload = {"prompt": prompt, "image_size": "square_hd"}
+    if kind == "gen" and mid == "flux-schnell":
+        payload["num_inference_steps"] = 8
     if kind in ("edit", "bg"):
         if not image_url:
             raise RuntimeError("pic: هذا النموذج يحتاج صورة مرفوعة")

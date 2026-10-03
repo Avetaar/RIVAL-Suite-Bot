@@ -61,6 +61,13 @@ def get_image(chat_id: int):
     return _IMAGE_BUF.get(str(chat_id))
 def clear_image(chat_id: int) -> None:
     _IMAGE_BUF.pop(str(chat_id), None)
+def set_quick_action(chat_id: int, action: str) -> None:
+    data = _load()
+    data.setdefault(str(chat_id), {"mode": None, "history": [], "coder_session": None})[
+        "quick_action"] = action
+    _save(data)
+def quick_action(chat_id: int) -> str | None:
+    return get(chat_id).get("quick_action")
 def bot_closed() -> bool:
     data = _load()
     return bool(data.get("__bot_closed__"))

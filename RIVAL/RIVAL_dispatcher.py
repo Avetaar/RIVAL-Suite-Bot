@@ -65,6 +65,19 @@ async def dispatch_callback(cb: dict, chat_id: int, mid: int) -> None:
         tid = parts[0]
         idx = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 0
         await H.select_model(chat_id, mid, tid, idx)
+    elif kind == "quick":
+        S.set_quick_action(chat_id, arg)
+        S.clear_mode(chat_id)
+        S.set_mode(chat_id, "image")
+        if arg == "gen":
+            text = (EMO('picture') + " ✦ <b>تصميم صورة بـ gpt-image-2</b>\n"
+                    + "أرسل وصف الصورة الآن (مثال: 🎨 علم العراق في الفضاء)\n"
+                    + "(أو أرسل «إلغاء» للتراجع)")
+        else:
+            text = (EMO('pencil') + " ✦ <b>تعديل صورة بـ gpt-image-2-edit</b>\n"
+                    + "أرسل الصورة التي تريد تعديلها (كصورة أو ملف)\n"
+                    + "(أو أرسل «إلغاء» للتراجع)")
+        await A.edit(chat_id, mid, text, K.image_menu())
     elif kind == "mnext":
         parts = arg.split(":", 1)
         tid = parts[0]

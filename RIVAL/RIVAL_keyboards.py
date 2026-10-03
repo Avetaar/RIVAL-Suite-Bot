@@ -64,7 +64,15 @@ def _service_menu(kind: str, label: str) -> InlineKeyboard:
         ),
     )
 chat_menu = lambda: _service_menu("chat", "💬 محادثة")
-image_menu = lambda: _service_menu("image", "🖼️ صورة")
+def image_menu() -> InlineKeyboard:
+    kb = _service_menu("image", "🖼️ صورة")
+    kb.rows.insert(1, InlineKeyboardRow(
+        InlineKeyboardButton("🎨 تصميم صورة", "quick:gen",
+                             style=SVC_STYLE["image"], icon=ICON["image"]),
+        InlineKeyboardButton("✏️ تعديل صورة", "quick:edit",
+                             style=SVC_STYLE["image"], icon=ICON["pencil"]),
+    ))
+    return kb
 tts_menu = lambda: _service_menu("tts", "🔊 صوت")
 music_menu = lambda: _service_menu("music", "🎵 موسيقى")
 coder_menu = lambda: _service_menu("coder", "🐍 برمجة")

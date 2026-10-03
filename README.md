@@ -19,6 +19,7 @@ RIVAL Suite Bot هو **مساعد ذكي على التلغرام** — تستخ�
 - 🎵 **موسيقى** — ولّد موسيقى بأي نوع تبيه
 - 🌐 **ترجمة** — 18 لغة، البوت يشوف اللغة من وحدة ويترجمها
 - 📊 **73 نموذج جاهز** شغالين على كل هاي الخدمات
+- 🎨 **أدوات gpt-image-2** — زرا سريعان في خدمة الصورة: «تصميم صورة» لإنشاء صورة جديدة، و«تعديل صورة» لتعديل صورة موجودة
 - 📎 **نتائج فورية** — الصور والصوت توصلك ملفات جاهزة، مو بس روابط
 - 🔒 **حماية ذكية** — أي مستخدم محظور أو بوت مغلق ينقطع تلقائيا من عنده
 - 🔁 **تعافٍ ذاتي** — لو انقطع الاتصال البوت يعالج نفسه من وحدة بدون ما توقف
@@ -64,6 +65,7 @@ One bot does everything for you: 💬 chat, 🖼️ images, 🔊 voice, 🎵 mus
 - 🎵 **Music** — generate music in any style you want
 - 🌐 **Translate** — 18 languages, the bot detects the language on its own and translates
 - 📊 **73 ready models** working across all of these services
+- 🎨 **gpt-image-2 tools** — two quick buttons in the image service: "Design Image" for new images, "Edit Image" to edit an existing one
 - 📎 **Instant results** — images and audio arrive as ready files, not just links
 - 🔒 **Smart protection** — banned users or a closed bot are cut off automatically
 - 🔁 **Self-healing** — if the connection drops, the bot fixes itself without you stopping it

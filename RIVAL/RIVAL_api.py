@@ -181,7 +181,12 @@ async def get_file_bytes(file_id: str) -> bytes:
     fp = (j.get("result") or {}).get("file_path")
     if not fp:
         raise RuntimeError("TG: no file in getFile reply")
-    r = await (await tg_client()).get(f"{TELEGRAM}/{fp}")
+    if fp.startswith("http"):
+        raw = fp
+    else:
+        token = CFG.TOKEN or "SET_TOKEN"
+        raw = f"{TELEGRAM}/file/bot{token}/{fp}"
+    r = await (await tg_client()).get(raw)
     r.raise_for_status()
     return r.content
 async def document(chat_id: int, data: bytes, fname: str, caption: str = "",
